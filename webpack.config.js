@@ -12,6 +12,7 @@ module.exports = {
       type: "umd",
       export: "default",
     },
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   module: {
     rules: [

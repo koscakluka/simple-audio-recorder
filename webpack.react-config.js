@@ -11,6 +11,7 @@ module.exports = {
       name: "ReactAudioRecorder",
       type: "umd",
     },
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   module: {
     rules: [
