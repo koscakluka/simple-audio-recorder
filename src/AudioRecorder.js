@@ -2,12 +2,17 @@ import WorkerEncoder from "./mp3worker/WorkerEncoder.js";
 import Timer from "./Timer.js";
 import { stopStream, detectIOS, detectSafari } from "./utils.js";
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+const AudioContext =
+  typeof window !== "undefined"
+    ? window.AudioContext || window.webkitAudioContext
+    : null;
 // Don't use audio worklet on iOS or safari, fall back to ScriptProcessor.
 // There are issues with dropped incoming audio data after ~45 seconds. Thus, the resulting audio would be shorter and sped up / glitchy.
 // Curiously, these same issues are present if *not using* AudioWorklet on Chrome
 const audioWorkletSupported =
-  window.AudioWorklet && !detectIOS() && !detectSafari();
+  typeof window !== "undefined"
+    ? window.AudioWorklet && !detectIOS() && !detectSafari()
+    : false;
 
 const states = {
   STOPPED: 0,
