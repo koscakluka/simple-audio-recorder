@@ -17,6 +17,7 @@ export const RecorderStates: {
 export function useSimpleAudioRecorder(options?: {
   workerUrl?: string;
   onDataAvailable?: (data: Int8Array) => void;
+  onTimeStep?: (time: number) => void;
   onComplete?: (result: { mp3Blob: Blob; mp3Url: string }) => void;
   onError?: (error: Error) => void;
   options?: Omit<AudioRecorderOptions, "streaming">;

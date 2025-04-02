@@ -27,6 +27,7 @@ function useInterval(updateFunc, timeStep = 1000 / 60.0) {
 export function useSimpleAudioRecorder({
   workerUrl,
   onDataAvailable,
+  onTimeStep,
   onComplete,
   onError,
   options,
@@ -84,6 +85,13 @@ export function useSimpleAudioRecorder({
 
   useInterval(() => {
     recorderRef.current && setTime(recorderRef.current.time);
+
+    if (
+      recorderRef.current &&
+      recorderStateRef.current === RecorderStates.RECORDING
+    ) {
+      onTimeStep && onTimeStep(recorderRef.current.time);
+    }
 
     if (recorderStateRef.current == RecorderStates.COUNTDOWN) {
       setCountdownTimeLeft(
