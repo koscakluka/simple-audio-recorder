@@ -15,22 +15,28 @@ AudioRecorder.preload("mp3worker.js");
 
 let recorder = new AudioRecorder();
 
-recorder.start().then(() => {
-	console.log("Recording started...");
-}).catch(error => {
-	console.log(error);
-});
+recorder
+  .start()
+  .then(() => {
+    console.log("Recording started...");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
-recorder.stop().then(mp3Blob => {
-	console.log("Recording stopped...");
+recorder
+  .stop()
+  .then((mp3Blob) => {
+    console.log("Recording stopped...");
 
-	const newAudio = document.createElement("audio");
-	newAudio.src = URL.createObjectURL(mp3Blob);
-	newAudio.controls = true;
-	document.body.append(newAudio);
-}).catch(error => {
-	console.log(error);
-});
+    const newAudio = document.createElement("audio");
+    newAudio.src = URL.createObjectURL(mp3Blob);
+    newAudio.controls = true;
+    document.body.append(newAudio);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 ```
 
 ### React hook and component
@@ -39,12 +45,12 @@ recorder.stop().then(mp3Blob => {
 import {SimpleAudioRecorder, useSimpleAudioRecorder} from "simple-audio-recorder/react";
 
 export default function App() {
-	const recorder = useSimpleAudioRecorder({workerUrl : "mp3worker.js"});
-	
+	const recorder = useSimpleAudioRecorder();
+
 	const viewInitial = <button onClick={recorder.start}>start recording</button>;
 	const viewRecording = <button onClick={recorder.stop}>stop recording</button>;
 	const viewError = (<>{viewInitial} <div>Error occurred! {recorder.errorStr}</div></>);
-	
+
 	return (
 		<div>
 			<SimpleAudioRecorder
@@ -52,8 +58,8 @@ export default function App() {
 				viewInitial={viewInitial}
 				viewRecording={viewRecording}
 				viewError={viewError}/>
-			
-			{recorder.mp3Urls.map(url => 
+
+			{recorder.mp3Urls.map(url =>
 				<audio key={url} src={url} controls/>
 			)}
 		</div>
@@ -83,6 +89,7 @@ Or start developing with:
 yarn install
 yarn start
 ```
+
 ...or whatever the npm equivalant is.
 
 ## Usage
@@ -98,9 +105,11 @@ import AudioRecorder from "simple-audio-recorder";
 ```
 
 Alternatively, just use a script tag:
+
 ```javascript
 <script type="text/javascript" src="audiorecorder.js"></script>
 ```
+
 Also, you must make sure that you distribute the web worker file "mp3worker.js" along with your application.
 
 ### Preload the MP3 encoder worker:
@@ -115,54 +124,61 @@ AudioRecorder.preload("./mp3worker.js");
 
 ```javascript
 let recorder = new AudioRecorder({
-	recordingGain : 1, // Initial recording volume
-	encoderBitRate : 96, // MP3 encoding bit rate
-	streaming : false, // Data will be returned in chunks (ondataavailable callback) as it is encoded,
-						// rather than at the end as one large blob
-	streamBufferSize : 50000, // Size of encoded mp3 data chunks returned by ondataavailable, if streaming is enabled
-	constraints : { // Optional audio constraints, see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-		channelCount : 1, // Set to 2 to hint for stereo if it's available, or leave as 1 to force mono at all times
-		autoGainControl : true,
-		echoCancellation : true,
-		noiseSuppression : true
-	},
+  recordingGain: 1, // Initial recording volume
+  encoderBitRate: 96, // MP3 encoding bit rate
+  streaming: false, // Data will be returned in chunks (ondataavailable callback) as it is encoded,
+  // rather than at the end as one large blob
+  streamBufferSize: 50000, // Size of encoded mp3 data chunks returned by ondataavailable, if streaming is enabled
+  constraints: {
+    // Optional audio constraints, see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+    channelCount: 1, // Set to 2 to hint for stereo if it's available, or leave as 1 to force mono at all times
+    autoGainControl: true,
+    echoCancellation: true,
+    noiseSuppression: true,
+  },
 
-	// Used for debugging only. Force using the older script processor instead of AudioWorklet.
-	// forceScriptProcessor : true
+  // Used for debugging only. Force using the older script processor instead of AudioWorklet.
+  // forceScriptProcessor : true
 });
 ```
 
 ### Use promises to start and stop recording
 
 ```javascript
-recorder.start().then(() => {
-	console.log("Recording started...");
-}).catch(error => {
-	console.log(error);
-});
+recorder
+  .start()
+  .then(() => {
+    console.log("Recording started...");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
-recorder.stop().then(mp3Blob => {
-	// Do something with the mp3 Blob!
-}).catch(error => {
-	console.log(error);
-});
+recorder
+  .stop()
+  .then((mp3Blob) => {
+    // Do something with the mp3 Blob!
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 ```
 
 ### Or use events
 
 ```javascript
 recorder.onstart = () => {
-	console.log("Recording started...");
+  console.log("Recording started...");
 };
 
 recorder.onstop = (mp3Blob) => {
-	// Do something with the mp3 Blob!
-	// When using onstop, mp3Blob could in rare cases be null if nothing was recorded
-	// (with the Promise API, that would be a stop() promise rejection)
+  // Do something with the mp3 Blob!
+  // When using onstop, mp3Blob could in rare cases be null if nothing was recorded
+  // (with the Promise API, that would be a stop() promise rejection)
 };
 
 recorder.onerror = (error) => {
-	console.log(error);
+  console.log(error);
 };
 
 // if onerror is set, start and stop won't return a promise
@@ -178,30 +194,30 @@ Want to receive encoded data chunks as they are produced? Useful for streaming u
 
 ```javascript
 let recorder = new AudioRecorder({
-	streaming : true,
-	streamBufferSize : 50000
+  streaming: true,
+  streamBufferSize: 50000,
 });
 
 let audioChunks = [];
 
 recorder.ondataavailable = (data) => {
-	// 50 KB of MP3 data received!
-	audioChunks.push(data);
+  // 50 KB of MP3 data received!
+  audioChunks.push(data);
 };
 
 recorder.start();
 
 // No mp3Blob will be received either with the promise API or via recorder.onstop if streaming is enabled.
 recorder.stop().then(() => {
-	// ...do something with all the chunks that were received by ondataavailable
-	let mp3Blob = new Blob(audioChunks, {type : "audio/mpeg"});
+  // ...do something with all the chunks that were received by ondataavailable
+  let mp3Blob = new Blob(audioChunks, { type: "audio/mpeg" });
 });
 ```
 
 ### Other functions/attributes
 
 ```javascript
-recorder.start(paused = false); // Supports starting in paused mode
+recorder.start((paused = false)); // Supports starting in paused mode
 recorder.pause();
 recorder.resume();
 
@@ -238,11 +254,11 @@ Please see the [react hook and component example](examples/react-hook-example) f
 
 ```javascript
 import {
-	useSimpleAudioRecorder,
-	SimpleAudioRecorder,
-	preloadWorker,
-	RecorderStates
-} from "simple-audio-recorder/react"
+  useSimpleAudioRecorder,
+  SimpleAudioRecorder,
+  preloadWorker,
+  RecorderStates,
+} from "simple-audio-recorder/react";
 ```
 
 #### useSimpleAudioRecorder hook
@@ -261,11 +277,11 @@ const {
 	recorderState, // Current state of recorder (see RecorderStates)
 	getProps // Function to get the props that can be passed to the SimpleAudioRecorder react component
 } = useSimpleAudioRecorder({
-	workerUrl, onDataAvailable, onComplete, onError, options, cleanup = false, timeUpdateStep = 111, countdown = 0
+	preloadWorker, onDataAvailable, onComplete, onError, options, cleanup = false, timeUpdateStep = 111, countdown = 0
 })
 ```
 
-- **workerUrl** - URL of the mp3 encoder. Can alternatively be specified using preloadWorker()
+- **preloadWorker** - Can alternatively be done using preloadWorker()
 - **onDataAvailable** - optional callback to receive encoded data as it is created.
 - **onComplete** - optional callback, receives `{mp3Blob, mp3Url}` when recording and encoding is finished.
 - **onError** - optional callback, receives any error object.
@@ -280,12 +296,19 @@ This is a very simple state machine component that shows a different view compon
 
 ```javascript
 SimpleAudioRecorder({
-	// As returned by useSimpleAudioRecorder
-	recorderState,
-	// The components to display in each of the states.
-	// Only viewInitial and viewRecording are absolutely required.
-	viewInitial, viewStarting, viewCountdown, viewRecording, viewPaused, viewEncoding, viewComplete, viewError
-})
+  // As returned by useSimpleAudioRecorder
+  recorderState,
+  // The components to display in each of the states.
+  // Only viewInitial and viewRecording are absolutely required.
+  viewInitial,
+  viewStarting,
+  viewCountdown,
+  viewRecording,
+  viewPaused,
+  viewEncoding,
+  viewComplete,
+  viewError,
+});
 ```
 
 - **viewInitial** - initial state of the recorder, you should show a "start recording" button that calls the `start` function from useSimpleAudioRecorder.
@@ -297,9 +320,9 @@ SimpleAudioRecorder({
 - **viewComplete** - optional, shown after recording has completed successfully. Defaults to viewInitial.
 - **viewError** - optional, but highly recommended. Shown when there is a recording error. You can display the contents of the error object or errorStr from useSimpleAudioRecorder.
 
-#### preloadWorker(workerUrl)
+#### preloadWorker()
 
-Instead of passing a workerUrl to `useSimpleAudioRecorder`, it's better to call this function somewhere at the start of your app to preload the worker as soon as possible.
+Instead of passing a preloadWorker to `useSimpleAudioRecorder`, it's better to call this function somewhere at the start of your app to preload the worker as soon as possible.
 
 #### RecorderStates
 
@@ -307,15 +330,15 @@ An enumeration of possible recorder states. Used by the SimpleAudioRecorder comp
 
 ```javascript
 RecorderStates = {
-	INITIAL,
-	STARTING,
-	RECORDING,
-	PAUSED,
-	ENCODING,
-	COMPLETE,
-	ERROR,
-	COUNTDOWN
-}
+  INITIAL,
+  STARTING,
+  RECORDING,
+  PAUSED,
+  ENCODING,
+  COMPLETE,
+  ERROR,
+  COUNTDOWN,
+};
 ```
 
 ### Known issues
@@ -329,4 +352,6 @@ AFAIK this is an unsolved issue, perhaps related to Safari's implementation of A
 Chrome isn't any better on iOS either as they are forced to use Safari under the hood (somehow, [this feels rather familiar](https://en.wikipedia.org/wiki/United_States_v._Microsoft_Corp.)).
 
 ## Licenses
+
 SimpleAudioRecorder is mostly MIT licenced, but the worker is probably LGPL as it uses [lamejs](https://github.com/zhuker/lamejs).
+

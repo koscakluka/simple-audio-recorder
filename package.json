@@ -42,7 +42,8 @@
     "lamejstmp": "1.0.1",
     "live-server": "1.2.1",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "worker-loader": "^3.0.8"
   },
   "peerDependencies": {
     "react": ">=16.8.0"

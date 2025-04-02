@@ -15,7 +15,7 @@ export const RecorderStates: {
 };
 
 export function useSimpleAudioRecorder(options?: {
-  workerUrl?: string;
+  preloadWorker?: boolean;
   onDataAvailable?: (data: Int8Array) => void;
   onTimeStep?: (time: number) => void;
   onComplete?: (result: { mp3Blob: Blob; mp3Url: string }) => void;
@@ -53,4 +53,4 @@ export function SimpleAudioRecorder(props: {
   viewError?: ReactNode;
 }): JSX.Element;
 
-export function preloadWorker(workerUrl: string): void;
+export function preloadWorker(): void;

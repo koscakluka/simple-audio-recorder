@@ -86,17 +86,15 @@ declare class WorkerEncoder {
   constructor(options: Record<string, any>);
 
   /**
-   * Preloads the worker with the given URL.
-   * @param workerUrl - The URL of the worker script.
+   * Preloads the worker
    */
-  static preload(workerUrl: string): void;
+  static preload(): void;
 
   /**
    * Waits for the worker to be ready. If the worker is not ready, it will attempt to load it.
-   * @param workerUrl - The URL of the worker script.
    * @returns A promise that resolves when the worker is ready.
    */
-  static waitForWorker(workerUrl: string): Promise<void>;
+  static waitForWorker(): Promise<void>;
 
   /**
    * Starts the encoding job.

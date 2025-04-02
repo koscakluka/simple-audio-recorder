@@ -1,3 +1,5 @@
+import newMp3Worker from "./mp3worker.js";
+
 let workerStates = {
   INACTIVE: 0,
   LOADING: 1,
@@ -37,13 +39,8 @@ function getWorkerCrossDomainURL(url) {
   return URL.createObjectURL(new Blob([content], { type: "text/javascript" }));
 }
 
-function loadWorker(workerUrl) {
-  if (/^https?:\/\//.test(workerUrl)) {
-    // Is it an absolute URL? Then consider it cross domain.
-    workerUrl = getWorkerCrossDomainURL(workerUrl);
-  }
-
-  worker = new Worker(workerUrl);
+function loadWorker() {
+  worker = newMp3Worker();
   workerState = workerStates.LOADING;
 
   worker.onmessage = (event) => {
@@ -98,16 +95,16 @@ export default class WorkerEncoder {
     };
   }
 
-  static preload(workerUrl) {
+  static preload() {
     if (
       workerState == workerStates.INACTIVE ||
       workerState == workerStates.ERROR
     ) {
-      loadWorker(workerUrl);
+      loadWorker();
     }
   }
 
-  static waitForWorker(workerUrl) {
+  static waitForWorker() {
     if (workerState == workerStates.READY) {
       return Promise.resolve();
     } else {
@@ -116,7 +113,7 @@ export default class WorkerEncoder {
         workerState == workerStates.INACTIVE ||
         workerState == workerStates.ERROR
       ) {
-        loadWorker(workerUrl);
+        loadWorker();
       }
 
       return new Promise((resolve, reject) => {

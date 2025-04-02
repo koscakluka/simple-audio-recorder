@@ -25,6 +25,13 @@ module.exports = {
           },
         },
       },
+      {
+        test: /mp3worker\.js$/i,
+        loader: "worker-loader",
+        options: {
+          inline: "no-fallback",
+        },
+      },
     ],
   },
 };

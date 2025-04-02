@@ -25,7 +25,7 @@ function useInterval(updateFunc, timeStep = 1000 / 60.0) {
 }
 
 export function useSimpleAudioRecorder({
-  workerUrl,
+  preloadWorker,
   onDataAvailable,
   onTimeStep,
   onComplete,
@@ -61,8 +61,8 @@ export function useSimpleAudioRecorder({
   }
 
   useEffect(() => {
-    if (workerUrl) {
-      AudioRecorder.preload(workerUrl);
+    if (preloadWorker) {
+      AudioRecorder.preload();
     }
 
     return () => {
@@ -230,6 +230,6 @@ export function SimpleAudioRecorder({
   return stateMap.get(recorderState) ?? RecorderStates.INITIAL;
 }
 
-export function preloadWorker(workerUrl) {
-  AudioRecorder.preload(workerUrl);
+export function preloadWorker() {
+  AudioRecorder.preload();
 }

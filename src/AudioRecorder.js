@@ -31,7 +31,7 @@ const DEFAULT_OPTIONS = {
   },
 };
 
-let workerUrl = null;
+let workerPreloaded = false;
 
 function createCancelStartError() {
   let error = new Error("AudioRecorder start cancelled by call to stop");
@@ -104,9 +104,9 @@ export default class AudioRecorder {
     );
   }
 
-  static preload(_workerUrl) {
-    workerUrl = _workerUrl;
-    WorkerEncoder.preload(workerUrl);
+  static preload() {
+    workerPreloaded = true;
+    WorkerEncoder.preload();
   }
 
   // Will we use AudioWorklet?
@@ -246,7 +246,7 @@ export default class AudioRecorder {
       throw new Error("Called start when not in stopped state");
     }
 
-    if (workerUrl == null) {
+    if (workerPreloaded == null) {
       throw new Error("preload was not called on AudioRecorder");
     }
 
@@ -255,7 +255,7 @@ export default class AudioRecorder {
     this.stream = null;
 
     try {
-      await WorkerEncoder.waitForWorker(workerUrl);
+      await WorkerEncoder.waitForWorker();
       this.stoppingCheck();
 
       // If a constraint is set, pass them, otherwise just pass true
