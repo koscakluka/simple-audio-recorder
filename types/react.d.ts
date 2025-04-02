@@ -37,6 +37,7 @@ export function useSimpleAudioRecorder(options?: {
   stop: () => void;
   pause: () => void;
   resume: () => void;
+  clear: () => void;
   recorderState: number;
   getProps: () => { recorderState: number };
 };

@@ -175,6 +175,13 @@ export function useSimpleAudioRecorder({
     }
   }
 
+  function clear() {
+    mp3Urls.forEach(URL.revokeObjectURL);
+    setMp3Urls([]);
+    setMp3Blobs([]);
+    setTime(0);
+  }
+
   const props = { recorderState };
 
   return {
@@ -190,6 +197,7 @@ export function useSimpleAudioRecorder({
     stop,
     pause,
     resume,
+    clear,
     ...props,
     getProps: () => props,
   };
