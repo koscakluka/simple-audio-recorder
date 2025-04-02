@@ -19,8 +19,8 @@
   },
   "main": "dist/audiorecorder.js",
   "exports": {
-    ".": "dist/audiorecorder.js",
-    "./react": "dist/react.js"
+    ".": "./dist/audiorecorder.js",
+    "./react": "./dist/react.js"
   },
   "scripts": {
     "build": "webpack && webpack --config webpack.worker-config.js && webpack --config webpack.react-config.js",
