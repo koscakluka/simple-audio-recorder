@@ -24,6 +24,7 @@
   },
   "scripts": {
     "build": "webpack && webpack --config webpack.worker-config.js && webpack --config webpack.react-config.js",
+    "prepare": "npm run build",
     "start": "concurrently \"webpack --watch\" \"webpack --watch --config webpack.worker-config.js\" \"webpack --watch --config webpack.react-config.js\" \"live-server --open=/examples/main-example/\""
   },
   "license": "MIT",
