@@ -17,7 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/vocaroo/simple-audio-recorder.git"
   },
-  "type": "module",
   "main": "dist/audiorecorder.js",
   "exports": {
     ".": {
