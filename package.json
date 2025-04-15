@@ -25,7 +25,7 @@
     },
     "./react": {
       "types": "./types/react.d.ts",
-      "default": "./dist/react.js"
+      "import": "./dist/react.js"
     }
   },
   "scripts": {
