@@ -35,4 +35,7 @@ module.exports = {
     ],
   },
   externals: ["react"],
+  experimental: {
+    outputModule: true,
+  },
 };
