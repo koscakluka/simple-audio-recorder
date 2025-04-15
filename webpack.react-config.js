@@ -5,8 +5,8 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "react.js",
+    path: path.resolve(__dirname, "dist", "react"),
+    filename: "index.mjs",
     library: {
       type: "module",
     },
