@@ -8,7 +8,6 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "react.js",
     library: {
-      name: "ReactAudioRecorder",
       type: "module",
     },
     globalObject: "typeof self !== 'undefined' ? self : this",
