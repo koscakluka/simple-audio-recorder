@@ -5,11 +5,10 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "react.js",
+    path: path.resolve(__dirname, "dist", "react"),
+    filename: "index.mjs",
     library: {
-      name: "ReactAudioRecorder",
-      type: "umd",
+      type: "module",
     },
     globalObject: "typeof self !== 'undefined' ? self : this",
   },
@@ -35,4 +34,7 @@ module.exports = {
     ],
   },
   externals: ["react"],
+  experiments: {
+    outputModule: true,
+  },
 };
