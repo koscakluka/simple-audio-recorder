@@ -9,7 +9,7 @@ module.exports = {
     filename: "react.js",
     library: {
       name: "ReactAudioRecorder",
-      type: "umd",
+      type: "module",
     },
     globalObject: "typeof self !== 'undefined' ? self : this",
   },
